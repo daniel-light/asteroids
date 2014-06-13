@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title></title>
+    <style>
+    #canvas {
+      display: block;
+      margin: auto;
+      background-image: url('background.jpg');
+    }
+    </style>
+    <script src="underscore.js"></script>
+    <script src="keymaster.js"></script>
+    <script src = "moving_object.js"></script>
+    <script src = "asteroid.js"></script>
+    <script src="bullet.js"></script>
+    <script src="ship.js"></script>
+    <script src = "game.js"></script>
+
+    <script>
+      window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        g = new Asteroids.Game(context, 1000, 900);
+        g.start(20);
+      }
+    </script>
+  </head>
+  <body>
+  <canvas id="canvas" width="1000" height="900">
+
+</html>
