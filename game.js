@@ -10,11 +10,9 @@
     this.DIM_X = dim_x;
     this.DIM_Y = dim_y;
     this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
-    this.asteroids = [];
-    for (var i = 0; i < 20; i++) {
-      new_asteroid = Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
-      this.asteroids.push(new_asteroid);
-    }
+    this.asteroids = _(20).times(function() {
+      return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
+    }.bind(this));
   }
 
   Game.prototype.render = function() {
@@ -57,12 +55,12 @@
   }
 
   Game.prototype.checkCollisions = function() {
-    var that = this;
+    var game = this;
 
     this.asteroids = this.asteroids.filter(function(asteroid) {
-      return !that.bullets.some(function(bullet, index) {
+      return !game.bullets.some(function(bullet, index) {
         if (bullet.isCollidedWith(asteroid)) {
-          that.bullets = that.bullets.slice(0, index).concat(that.bullets.slice(index + 1));
+          game.bullets.splice(index, 1);
           return true;
         } else {
           return false;
@@ -71,7 +69,7 @@
     });
 
     if (this.asteroids.some(function (asteroid) {
-      return asteroid.isCollidedWith(that.ship);
+      return asteroid.isCollidedWith(game.ship);
     })) {
       alert("You suck. Realy hard. And the game's over. Okay. Great. Super duper. Stop. Don't.");
       clearInterval(this.gameIntervalId);
@@ -105,8 +103,8 @@
     var dim_x = this.DIM_X;
     var dim_y = this.DIM_Y;
     if (this.asteroids.length < 10 || Math.random() < .0004 * this.interval) {
-      var new_asteroid = Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
-      this.asteroids.push(new_asteroid);
+      this.asteroids.push(
+        Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship));
     }
   }
 
