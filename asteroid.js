@@ -25,7 +25,7 @@
 
   Asteroid.randomAsteroid = function(dimX, dimY, ship) {
     var pos = {x: Math.random() * dimX, y: Math.random() * dimY};
-    var vel = {x: 4 - Math.random() * 5, y: 4 - Math.random() * 5};
+    var vel = Asteroid.randomVelocity();
     var newAsteroid = new Asteroid(pos, vel, Asteroid.RADIUS, Asteroid.COLOR);
 
     if(ship.isCollidedWith(newAsteroid)) {
@@ -34,5 +34,14 @@
       return newAsteroid;
     }
   };
+
+  Asteroid.randomVelocity = function(base_vel) {
+    var vel = {x: 2 - Math.random() * 4, y: 2 - Math.random() * 4};
+    if (base_vel) {
+      vel.x += base_vel.x;
+      vel.y += base_vel.y;
+    }
+    return vel;
+  }
 
 })(this);
