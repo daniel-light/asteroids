@@ -3,8 +3,8 @@
   var Asteroids = root.Asteroids = (root.Asteroids || {});
 
   var MovingObject = Asteroids.MovingObject = function(pos, vel, radius, color) {
-    this.pos = pos;
-    this.vel = vel;
+    this.pos = { x: pos.x, y: pos.y };
+    this.vel = { x: vel.x, y: vel.y };
     this.radius = radius;
     this.color = color;
   }

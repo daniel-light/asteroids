@@ -16,9 +16,12 @@
       return [];
 
     var chunks = _(2).times(function (n) {
-      return new Asteroid(this.pos, this.vel, this.radius / 2, "red");
+      return new Asteroid(
+        this.pos,
+        Asteroid.randomVelocity(this.vel),
+        this.radius / 2, "red"
+      );
     }.bind(this));
-    // change the chunk velocities
     console.log(chunks)
     return chunks;
   }

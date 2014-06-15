@@ -66,7 +66,9 @@
           return false;
         }
       })) {
+        var count = asteroids.length;
         asteroids.splice.apply(asteroids, [asteroid_index, 1].concat(asteroid.split()))
+        console.log(count, asteroids.length, asteroids[asteroid_index], asteroids[asteroid_index + 1]);
       }
     });
 
