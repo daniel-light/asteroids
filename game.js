@@ -57,15 +57,17 @@
   Game.prototype.checkCollisions = function() {
     var game = this;
 
-    this.asteroids = this.asteroids.filter(function(asteroid) {
-      return !game.bullets.some(function(bullet, index) {
+    this.asteroids.forEach(function(asteroid, asteroid_index, asteroids) {
+      if (game.bullets.some(function(bullet, bullet_index) {
         if (bullet.isCollidedWith(asteroid)) {
-          game.bullets.splice(index, 1);
+          game.bullets.splice(bullet_index, 1);
           return true;
         } else {
           return false;
         }
-      });
+      })) {
+        asteroids.splice.apply(asteroids, [asteroid_index, 1].concat(asteroid.split()))
+      }
     });
 
     if (this.asteroids.some(function (asteroid) {

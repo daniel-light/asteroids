@@ -9,6 +9,19 @@
 
   Asteroid.COLOR = "pink";
   Asteroid.RADIUS = 45;
+  Asteroid.MIN_RADIUS = 5;
+
+  Asteroid.prototype.split = function() {
+    if (this.radius < Asteroid.MIN_RADIUS)
+      return [];
+
+    var chunks = _(2).times(function (n) {
+      return new Asteroid(this.pos, this.vel, this.radius / 2, "red");
+    }.bind(this));
+    // change the chunk velocities
+    console.log(chunks)
+    return chunks;
+  }
 
   Asteroid.randomAsteroid = function(dimX, dimY, ship) {
     var pos = {x: Math.random() * dimX, y: Math.random() * dimY};
