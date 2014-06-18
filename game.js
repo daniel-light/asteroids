@@ -13,7 +13,11 @@
       img: document.getElementById('background'),
       pos_x: 0,
       pos_y: 0,
+      drift_x: 3,
+      drift_y: 2
     };
+    this.background.width = this.background.img.width;
+    this.background.height = this.background.img.height;
     this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
     this.asteroids = _(20).times(function() {
       return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
@@ -32,11 +36,17 @@
 
   Game.prototype.renderBackground = function() {
     var bg = this.background;
+    var x_portion = Math.min(bg.width - this.DIM_X, this.DIM_X);
+    var y_portion = Math.min(bg.height - this.DIM_Y, this.DIM_Y);
+    console.log(x_portion, y_portion)
     this.context.drawImage(bg.img,
-      bg.pos_x, bg.pos_y,             // src x, y
-      2 * this.DIM_X, 2 * this.DIM_Y, // src w, h
-      0, 0,                           // dest x, y
-      this.DIM_X, this.DIM_Y)         // dest w, h
+      bg.pos_x, bg.pos_y,           // src x, y
+      2 * x_portion, 2 * y_portion, // src w, h
+      0, 0,                         // dest x, y
+      x_portion, y_portion);        // dest w, h
+
+      bg.pos_x = (bg.pos_x + bg.drift_x) % bg.width;
+      bg.pos_y = (bg.pos_y + bg.drift_y) % bg.height;
   }
 
   Game.prototype.moveObjects = function(movingObjects) {
