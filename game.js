@@ -9,6 +9,11 @@
     this.context = context;
     this.DIM_X = dim_x;
     this.DIM_Y = dim_y;
+    this.background = {
+      img: document.getElementById('background'),
+      pos_x: 0,
+      pos_y: 0,
+    };
     this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
     this.asteroids = _(20).times(function() {
       return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
@@ -18,10 +23,20 @@
   Game.prototype.render = function() {
     var context = this.context
     context.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+    this.renderBackground();
     this.ship.render(context);
     this.asteroids.concat(this.bullets).forEach(function (movingObject) {
       movingObject.render(context);
     });
+  }
+
+  Game.prototype.renderBackground = function() {
+    var bg = this.background;
+    this.context.drawImage(bg.img,
+      bg.pos_x, bg.pos_y,             // src x, y
+      2 * this.DIM_X, 2 * this.DIM_Y, // src w, h
+      0, 0,                           // dest x, y
+      this.DIM_X, this.DIM_Y)         // dest w, h
   }
 
   Game.prototype.moveObjects = function(movingObjects) {
