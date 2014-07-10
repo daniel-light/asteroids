@@ -36,17 +36,14 @@
 
   Game.prototype.renderBackground = function() {
     var bg = this.background;
-    var x_portion = Math.min(bg.width - this.DIM_X, this.DIM_X);
+    var x_portion = Math.min((bg.width - bg.pos_x) / 2, this.DIM_X);
     var y_portion = Math.min(bg.height - this.DIM_Y, this.DIM_Y);
-    console.log(x_portion, y_portion)
     this.context.drawImage(bg.img,
-      bg.pos_x, bg.pos_y,           // src x, y
-      2 * x_portion, 2 * y_portion, // src w, h
+      400, 400,           // src x, y
+      2 * this.DIM_X, 2 * this.DIM_Y, // src w, h
       0, 0,                         // dest x, y
-      x_portion, y_portion);        // dest w, h
+      this.DIM_X, this.DIM_Y);        // dest w, h
 
-      bg.pos_x = (bg.pos_x + bg.drift_x) % bg.width;
-      bg.pos_y = (bg.pos_y + bg.drift_y) % bg.height;
   }
 
   Game.prototype.moveObjects = function(movingObjects) {
@@ -100,7 +97,7 @@
     if (this.asteroids.some(function (asteroid) {
       return asteroid.isCollidedWith(game.ship);
     })) {
-      alert("You suck. Realy hard. And the game's over. Okay. Great. Super duper. Stop. Don't.");
+      alert("You lose!");
       clearInterval(this.gameIntervalId);
     }
   }
