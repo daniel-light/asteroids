@@ -12,19 +12,27 @@
   Ship.COLOR = "lightgreen";
 
   Ship.prototype.render = function(context) {
-    context.fillStyle = this.color;
+    var pi = Math.PI,
+        centerX = this.pos.x,
+        centerY = this.pos.y,
+        heading = this.heading,
+        radius = this.radius;
 
+    var frontX = centerX + radius * Math.cos(heading),
+        frontY = centerY - radius * Math.sin(heading),
+        leftX = centerX + radius * Math.cos(heading + pi * 5 / 4),
+        leftY = centerY - radius * Math.sin(heading + pi * 5 / 4),
+        rightX = centerX + radius * Math.cos(heading + pi * 3 / 4),
+        rightY = centerY - radius * Math.sin(heading + pi * 3 / 4);
+
+    context.strokeStyle = 'white';
+    context.lineWidth = 3;
     context.beginPath();
-    context.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
-    context.fill();
-
-    var x = this.pos.x + (this.radius - 3) * Math.cos(this.heading);
-    var y = this.pos.y - (this.radius - 3) * Math.sin(this.heading);
-
-    context.fillStyle = "red"
-    context.beginPath();
-    context.arc(x, y, 5, 0, 2 * Math.PI, true);
-    context.fill();
+    context.moveTo(frontX, frontY);
+    context.lineTo(leftX, leftY);
+    context.lineTo(rightX, rightY);
+    context.lineTo(frontX, frontY);
+    context.stroke();
   }
 
   Ship.prototype.move = function(dimX, dimY) {
