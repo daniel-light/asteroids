@@ -6,7 +6,7 @@
     Asteroids.MovingObject.apply(this, arguments);
 
     this._vertexes = _(7).times(function(n) {
-      var distance = Math.random() * this.radius * 5 / 6;
+      var distance = Math.random() * this.radius * 2 / 3 + this.radius * 1 / 3;
       var heading = Math.PI * 2 / 7 * n;
       return {x: distance * Math.cos(heading), y: distance * Math.sin(heading)};
     }.bind(this));
@@ -14,8 +14,8 @@
   Asteroid.prototype = Object.create(Asteroids.MovingObject.prototype);
 
   Asteroid.COLOR = "pink";
-  Asteroid.RADIUS = 45;
-  Asteroid.MIN_RADIUS = 5;
+  Asteroid.RADIUS = 64;
+  Asteroid.MIN_RADIUS = 8;
 
   Asteroid.prototype.split = function() {
     if (this.radius < Asteroid.MIN_RADIUS)

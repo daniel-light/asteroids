@@ -4,7 +4,6 @@
   var Asteroids = root.Asteroids = (root.Asteroids || {});;
 
   var Game = Asteroids.Game = function(context, dim_x, dim_y) {
-    var new_asteroid, test_asteroid;
     this.bullets = [];
     this.context = context;
     this.DIM_X = dim_x;
@@ -19,7 +18,7 @@
     this.background.width = this.background.img.width;
     this.background.height = this.background.img.height;
     this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
-    this.asteroids = _(20).times(function() {
+    this.asteroids = _(10).times(function() {
       return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
     }.bind(this));
   }
@@ -65,6 +64,9 @@
   }
 
   Game.prototype.step = function() {
+    this._lastTime = this._lastTime || 0;
+    console.log(Date.now() - this._lastTime);
+    this._lastTime = Date.now();
     this.spawnRoids();
     this.move();
     this.render();
@@ -90,7 +92,6 @@
       })) {
         var count = asteroids.length;
         asteroids.splice.apply(asteroids, [asteroid_index, 1].concat(asteroid.split()))
-        console.log(count, asteroids.length, asteroids[asteroid_index], asteroids[asteroid_index + 1]);
       }
     });
 
@@ -128,7 +129,7 @@
   Game.prototype.spawnRoids = function() {
     var dim_x = this.DIM_X;
     var dim_y = this.DIM_Y;
-    if (this.asteroids.length < 10 || Math.random() < .0004 * this.interval) {
+    if (this.asteroids.length < 8 || Math.random() < .0004 * this.interval) {
       this.asteroids.push(
         Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship));
     }
