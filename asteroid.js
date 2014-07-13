@@ -4,7 +4,13 @@
 
   var Asteroid = Asteroids.Asteroid = function() {
     Asteroids.MovingObject.apply(this, arguments);
-  }
+
+    this._vertexes = _(7).times(function(n) {
+      var distance = Math.random() * this.radius * 5 / 6;
+      var heading = Math.PI * 2 / 7 * n;
+      return {x: distance * Math.cos(heading), y: distance * Math.sin(heading)};
+    }.bind(this));
+  };
   Asteroid.prototype = Object.create(Asteroids.MovingObject.prototype);
 
   Asteroid.COLOR = "pink";
@@ -22,9 +28,25 @@
         this.radius / 2, "red"
       );
     }.bind(this));
-    console.log(chunks)
+
     return chunks;
-  }
+  };
+
+  Asteroid.prototype.render = function(context) {
+    context.strokeStyle = 'white';
+    context.strokeWidth = 2;
+
+    context.moveTo(
+      this.pos.x + _.last(this._vertexes).x,
+      this.pos.y + _.last(this._vertexes).y
+    );
+
+    this._vertexes.forEach(function(vertex) {
+      context.lineTo(this.pos.x + vertex.x, this.pos.y + vertex.y);
+    }.bind(this));
+
+    context.stroke();
+  };
 
   Asteroid.randomAsteroid = function(dimX, dimY, ship) {
     var pos = {x: Math.random() * dimX, y: Math.random() * dimY};
@@ -45,6 +67,6 @@
       vel.y += base_vel.y;
     }
     return vel;
-  }
+  };
 
 })(this);
