@@ -49,11 +49,11 @@
         radius = this.radius;
 
     var frontX = radius * Math.cos(heading),
-        frontY = radius * Math.sin(heading),
+        frontY = -1 * radius * Math.sin(heading),
         leftX = radius * Math.cos(heading + pi * 5 / 4),
-        leftY = radius * Math.sin(heading + pi * 5 / 4),
+        leftY = -1 * radius * Math.sin(heading + pi * 5 / 4),
         rightX = radius * Math.cos(heading + pi * 3 / 4),
-        rightY = radius * Math.sin(heading + pi * 3 / 4);
+        rightY = -1 * radius * Math.sin(heading + pi * 3 / 4);
 
     this._vertexes = [
       {x: frontX, y: frontY},
