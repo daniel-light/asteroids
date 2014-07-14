@@ -43,13 +43,20 @@
   };
 
   MovingObject.prototype.isCollidedWith = function(otherObject) {
+    var p1 = new SAT.Polygon(
+      new SAT.Vector(this.pos.x, this.pos.y),
+      this._vertexes.map(function(vertex) {
+        return new SAT.Vector(vertex.x, vertex.y);
+      })
+    );
+    var p2 = new SAT.Polygon(
+      new SAT.Vector(otherObject.pos.x, otherObject.pos.y),
+      otherObject._vertexes.map(function(vertex) {
+        return new SAT.Vector(vertex.x, vertex.y);
+      })
+    );
 
-    var xDiff = Math.pow(this.pos.x - otherObject.pos.x, 2);
-    var yDiff = Math.pow(this.pos.y - otherObject.pos.y, 2);
-    var radiiSum = this.radius + otherObject.radius;
-    var distance = Math.sqrt(xDiff + yDiff);
-
-    return distance < radiiSum;
-  }
+    return SAT.testPolygonPolygon(p1, p2);
+  };
 
 })(this);
