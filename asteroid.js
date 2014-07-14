@@ -15,7 +15,7 @@
 
   Asteroid.COLOR = "pink";
   Asteroid.RADIUS = 64;
-  Asteroid.MIN_RADIUS = 8;
+  Asteroid.MIN_RADIUS = 16;
 
   Asteroid.prototype.split = function() {
     if (this.radius < Asteroid.MIN_RADIUS)

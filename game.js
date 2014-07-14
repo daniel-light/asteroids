@@ -4,7 +4,6 @@
   var Asteroids = root.Asteroids = (root.Asteroids || {});;
 
   var Game = Asteroids.Game = function(context, dim_x, dim_y) {
-    this.bullets = [];
     this.context = context;
     this.DIM_X = dim_x;
     this.DIM_Y = dim_y;
@@ -17,16 +16,25 @@
     };
     this.background.width = this.background.img.width;
     this.background.height = this.background.img.height;
+
     this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
+    this.bullets = [];
     this.asteroids = _(10).times(function() {
       return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
     }.bind(this));
+
+    this.score = 0;
   }
 
   Game.prototype.render = function() {
-    var context = this.context
+    var context = this.context;
     context.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.renderBackground();
+
+    context.fillStyle = 'red';
+    context.font = 'bold 30pt sans-serif';
+    context.fillText(this.score.toString(), this.DIM_X / 2 - 20, 50);
+
     this.ship.render(context);
     this.asteroids.concat(this.bullets).forEach(function (movingObject) {
       movingObject.render(context);
@@ -65,7 +73,6 @@
 
   Game.prototype.step = function() {
     this._lastTime = this._lastTime || 0;
-    console.log(Date.now() - this._lastTime);
     this._lastTime = Date.now();
     this.spawnRoids();
     this.move();
@@ -91,9 +98,10 @@
         }
       })) {
         var count = asteroids.length;
-        asteroids.splice.apply(asteroids, [asteroid_index, 1].concat(asteroid.split()))
+        asteroids.splice.apply(asteroids, [asteroid_index, 1].concat(asteroid.split()));
+        this.score += 1;
       }
-    });
+    }.bind(this));
 
     if (this.asteroids.some(function (asteroid) {
       return asteroid.isCollidedWith(game.ship);
