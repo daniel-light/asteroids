@@ -127,10 +127,10 @@
       ship.power(-0.4);
     }
     if(key.isPressed("left")) {
-      ship.heading += 0.1;
+      ship.rotate(0.1);
     }
     if(key.isPressed("right")) {
-      ship.heading -= 0.1;
+      ship.rotate(-0.1);
     }
   }
 

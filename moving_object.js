@@ -26,12 +26,21 @@
   }
 
   MovingObject.prototype.render = function(context) {
-    context.fillStyle = this.color;
-
+    context.strokeStyle = 'white';
+    context.strokeWidth = 2;
     context.beginPath();
-    context.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, true);
-    context.fill();
-  }
+
+    context.moveTo(
+      this.pos.x + _.last(this._vertexes).x,
+      this.pos.y + _.last(this._vertexes).y
+    );
+
+    this._vertexes.forEach(function(vertex) {
+      context.lineTo(this.pos.x + vertex.x, this.pos.y + vertex.y);
+    }.bind(this));
+
+    context.stroke();
+  };
 
   MovingObject.prototype.isCollidedWith = function(otherObject) {
 
