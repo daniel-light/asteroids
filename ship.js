@@ -35,7 +35,7 @@
   Ship.prototype.fireBullet = function() {
     var x = this.pos.x + (this.radius + 1) * Math.cos(this.heading);
     var y = this.pos.y - (this.radius + 1) * Math.sin(this.heading);
-    var bullet = new Asteroids.Bullet({x: x, y: y}, this.heading);
+    var bullet = new Asteroids.Bullet({x: x, y: y}, this.heading, this.vel);
     return bullet;
   };
 
