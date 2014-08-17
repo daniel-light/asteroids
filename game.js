@@ -31,7 +31,7 @@
     context.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.renderBackground();
 
-    context.fillStyle = 'red';
+    context.fillStyle = 'white';
     context.font = 'bold 30pt sans-serif';
     context.fillText(this.score.toString(), this.DIM_X / 2 - 20, 50);
 
@@ -71,6 +71,8 @@
     this.ship.move(this.DIM_X, this.DIM_Y);
   }
 
+  Game.prototype.FRAME_STEP_TIME = 20;
+
   Game.prototype.step = function() {
     this._lastTime = this._lastTime || 0;
     this._lastTime = Date.now();
@@ -80,7 +82,22 @@
     this.checkCollisions();
   }
 
-  Game.prototype.start = function(interval) {
+  Game.prototype.start = function() {
+    this.render();
+    this.context.fillStyle = 'white';
+    this.context.font = 'bold 30pt sans-serif';
+    this.context.fillText(
+      'Press Space to Play',
+      this.DIM_X / 2 - 190,
+      this.DIM_Y / 2 - 15);
+
+    key('space', function() {
+      key.unbind('space');
+      this.play(this.FRAME_STEP_TIME);
+    }.bind(this));
+  }
+
+  Game.prototype.play = function(interval) {
     this.bindKeys();
     this.gameIntervalId = setInterval(this.step.bind(this), interval);
   }
