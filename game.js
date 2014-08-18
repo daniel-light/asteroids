@@ -16,11 +16,16 @@
     };
     this.background.width = this.background.img.width;
     this.background.height = this.background.img.height;
+  }
 
-    this.ship = new Asteroids.Ship({x: dim_x / 2, y: dim_y / 2});
+  Game.prototype.setup = function() {
+    this.ship = new Asteroids.Ship({x: this.DIM_X / 2, y: this.DIM_Y / 2});
     this.bullets = [];
     this.asteroids = _(10).times(function() {
-      return Asteroids.Asteroid.randomAsteroid(dim_x, dim_y, this.ship);
+      return Asteroids.Asteroid.randomAsteroid(
+        this.DIM_X,
+        this.DIM_Y,
+        this.ship);
     }.bind(this));
 
     this.score = 0;
@@ -83,7 +88,8 @@
   }
 
   Game.prototype.start = function() {
-    this.render();
+    this.context.fillStyle = 'black';
+    this.context.fillRect(0, 0, this.DIM_X, this.DIM_Y);
     this.context.fillStyle = 'white';
     this.context.font = 'bold 30pt sans-serif';
     this.context.fillText(
@@ -98,8 +104,30 @@
   }
 
   Game.prototype.play = function(interval) {
+    this.setup();
+    this.render();
     this.bindKeys();
     this.gameIntervalId = setInterval(this.step.bind(this), interval);
+  }
+
+  Game.prototype.gameOver = function() {
+    clearInterval(this.gameIntervalId);
+
+    this.context.fillStyle = 'white';
+    this.context.font = 'bold 30pt sans-serif';
+    this.context.fillText(
+      'Game Over',
+      this.DIM_X / 2 - 100,
+      this.DIM_Y / 2 - 30);
+    this.context.fillText(
+      'Press Space to Play',
+      this.DIM_X / 2 - 190,
+      this.DIM_Y / 2 + 10);
+
+    key('space', function() {
+      key.unbind('space');
+      this.play(this.FRAME_STEP_TIME);
+    }.bind(this));
   }
 
   Game.prototype.checkCollisions = function() {
@@ -123,8 +151,7 @@
     if (this.asteroids.some(function (asteroid) {
       return asteroid.isCollidedWith(game.ship);
     })) {
-      alert("You lose!");
-      clearInterval(this.gameIntervalId);
+      this.gameOver();
     }
   }
 
